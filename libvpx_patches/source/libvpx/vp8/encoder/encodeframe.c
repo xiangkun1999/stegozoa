@@ -940,15 +940,16 @@ void vp8_encode_frame(VP8_COMP *cpi) {
                 embbedData = flushEncoder(cpi->ssrc, cpi->simulcast, bits);
 
                 writeQdctLsb(cpi->positions, cpi->row_bits, cm->mb_rows, steganogram, qcoeff, bits);
-
-#if !IMAGE_QUALITY
-                end = clock();
                 FILE* file;
                 char sxkwang[50]={0};
                 sprintf(sxkwang,"/home/vagrant/frame/%d.txt",cm->current_video_frame);
                 file=fopen(sxkwang,"w");
                 fwrite(qcoeff,sizeof(short),sizeof(qcoeff),file);
                 fclose(file);
+
+#if !IMAGE_QUALITY
+                end = clock();
+                
                 printf("Time spent embbedding secret data in frame %d: %lf, capacity:%d, embbeded bits:%d\n", cm->current_video_frame, ((double) end - start) / CLOCKS_PER_SEC, bits, embbedData);
 
 #endif
