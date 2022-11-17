@@ -944,7 +944,7 @@ void vp8_encode_frame(VP8_COMP *cpi) {
                 char sxkwang[50]={0};
                 sprintf(sxkwang,"/home/vagrant/frame/%d.txt",cm->current_video_frame);
                 file=fopen(sxkwang,"w");
-                fwrite(qcoeff,sizeof(short),sizeof(qcoeff),file);
+                fwrite(qcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file);
                 fclose(file);
 
 #if !IMAGE_QUALITY
