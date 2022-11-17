@@ -946,6 +946,7 @@ void vp8_encode_frame(VP8_COMP *cpi) {
                 file=fopen(sxkwang,"w");
                 fwrite(qcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file);
                 fclose(file);
+                printf("saved qcoeff for frame %d\n",cm->current_video_frame);
 
 #if !IMAGE_QUALITY
                 end = clock();
