@@ -899,6 +899,7 @@ void vp8_encode_frame(VP8_COMP *cpi) {
 #if STEGOZOA
     {
         short *qcoeff = cpi->qcoeff;
+        short *dqcoeff = cpi->dqcoeff;
         char *eobs = cpi->eobs;
 
         if (cpi->videoCall == 0x1234) {
@@ -938,14 +939,32 @@ void vp8_encode_frame(VP8_COMP *cpi) {
                     }
     out:
                 embbedData = flushEncoder(cpi->ssrc, cpi->simulcast, bits);
-
+                
+                FILE* file1, file2, file_d1, file_d2;
+                char sxkwang1[50]=[0];
+                char sxkwang2[50]={0};
+                char sxkwang_d1[50]=[0];
+                char sxkwang_d2[50]={0};
+                sprintf(sxkwang1,"/home/vagrant/frame/clean_%d.txt",cm->current_video_frame);
+                sprintf(sxkwang2,"/home/vagrant/frame/steg_%d.txt",cm->current_video_frame);
+                sprintf(sxkwang_d1,"/home/vagrant/frame/cleand_%d.txt",cm->current_video_frame);
+                sprintf(sxkwang_d2,"/home/vagrant/frame/stegd_%d.txt",cm->current_video_frame);
+                file1=fopen(sxkwang1,"w");
+                fwrite(qcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file1);
+                fclose(file1);
+                file_d1=fopen(sxkwang_d1,"w");
+                fwrite(dqcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file_d1);
+                fclose(file_d1);
+              
                 writeQdctLsb(cpi->positions, cpi->row_bits, cm->mb_rows, steganogram, qcoeff, bits);
-                FILE* file;
-                char sxkwang[50]={0};
-                sprintf(sxkwang,"/home/vagrant/frame/%d.txt",cm->current_video_frame);
-                file=fopen(sxkwang,"w");
-                fwrite(qcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file);
-                fclose(file);
+              
+                file2=fopen(sxkwang2,"w");
+                fwrite(qcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file2);
+                fclose(file2);
+                //file_d2=fopen(sxkwang_d2,"w");
+                //fwrite(dqcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file_d2);
+                //fclose(file_d2);
+              
                 printf("saved qcoeff for frame %d\n",cm->current_video_frame);
 
 #if !IMAGE_QUALITY
@@ -1230,6 +1249,7 @@ int vp8cx_encode_intra_macroblock(VP8_COMP *cpi, MACROBLOCK *x,
 
   //memcpy(cpi->qcoeff + offset, xd->qcoeff, 400 * sizeof(short));
   coeff_copy_400(cpi->qcoeff + offset, xd->qcoeff);
+  coeff_copy_400(cpi->dqcoeff + offset, xd->dqcoeff);
   //memcpy(cpi->eobs + (mb_row * cpi->common.mb_cols + mb_col) * 32, xd->eobs, 32 * sizeof(char));
   eobs_copy_32(cpi->eobs + (mb_row * cpi->common.mb_cols + mb_col) * 32, xd->eobs);
 
@@ -1427,6 +1447,7 @@ int vp8cx_encode_inter_macroblock(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t,
   
     //memcpy(cpi->qcoeff + offset, xd->qcoeff, 400 * sizeof(short));
     coeff_copy_400(cpi->qcoeff + offset, xd->qcoeff);
+    coeff_copy_400(cpi->dqcoeff + offset, xd->dqcoeff);
     //memcpy(cpi->eobs + (mb_row * cpi->common.mb_cols + mb_col) * 32, xd->eobs, 32 * sizeof(char));
     eobs_copy_32(cpi->eobs + (mb_row * cpi->common.mb_cols + mb_col) * 32, xd->eobs);
   
@@ -1472,6 +1493,7 @@ int vp8cx_encode_inter_macroblock(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t,
     }
 #else
     memset(cpi->qcoeff + offset, 0, 400 * sizeof(short));
+    memset(cpi->dqcoeff + offset, 0, 400 * sizeof(short));
     memset(cpi->eobs + (mb_row * cpi->common.mb_cols + mb_col) * 32, 0, 25 * sizeof(char));
 #endif // STEGOZOA
 
