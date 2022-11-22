@@ -941,9 +941,9 @@ void vp8_encode_frame(VP8_COMP *cpi) {
                 embbedData = flushEncoder(cpi->ssrc, cpi->simulcast, bits);
                 
                 FILE* file1, file2, file_d1, file_d2;
-                char sxkwang1[50]=[0];
+                char sxkwang1[50]={0};
                 char sxkwang2[50]={0};
-                char sxkwang_d1[50]=[0];
+                char sxkwang_d1[50]={0};
                 char sxkwang_d2[50]={0};
                 sprintf(sxkwang1,"/home/vagrant/frame/clean_%d.txt",cm->current_video_frame);
                 sprintf(sxkwang2,"/home/vagrant/frame/steg_%d.txt",cm->current_video_frame);
