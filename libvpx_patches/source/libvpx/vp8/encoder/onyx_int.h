@@ -303,6 +303,7 @@ typedef struct VP8_COMP {
   int *row_bits;
 
   short *qcoeff;
+  short *dqcoeff;
   char *eobs;
   uint32_t ssrc;
   int videoCall;
