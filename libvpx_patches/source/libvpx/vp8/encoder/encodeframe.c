@@ -949,19 +949,19 @@ void vp8_encode_frame(VP8_COMP *cpi) {
                 sprintf(sxkwang2,"/home/vagrant/frame/steg_%d.txt",cm->current_video_frame);
                 sprintf(sxkwang_d1,"/home/vagrant/frame/cleand_%d.txt",cm->current_video_frame);
                 sprintf(sxkwang_d2,"/home/vagrant/frame/stegd_%d.txt",cm->current_video_frame);
-                file1=fopen(sxkwang1,"w");
+                file1=fopen(sxkwang1,"wb");
                 fwrite(qcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file1);
                 fclose(file1);
-                file_d1=fopen(sxkwang_d1,"w");
+                file_d1=fopen(sxkwang_d1,"wb");
                 fwrite(dqcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file_d1);
                 fclose(file_d1);
               
                 writeQdctLsb(cpi->positions, cpi->row_bits, cm->mb_rows, steganogram, qcoeff, bits);
               
-                file2=fopen(sxkwang2,"w");
+                file2=fopen(sxkwang2,"wb");
                 fwrite(qcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file2);
                 fclose(file2);
-                //file_d2=fopen(sxkwang_d2,"w");
+                //file_d2=fopen(sxkwang_d2,"wb");
                 //fwrite(dqcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file_d2);
                 //fclose(file_d2);
               
