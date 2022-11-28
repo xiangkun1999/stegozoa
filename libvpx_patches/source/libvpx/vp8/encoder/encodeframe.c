@@ -940,7 +940,7 @@ void vp8_encode_frame(VP8_COMP *cpi) {
     out:
                 embbedData = flushEncoder(cpi->ssrc, cpi->simulcast, bits);
                 
-                FILE* file1, file2, file_d1, file_d2;
+                FILE *file1, *file2, *file_d1, *file_d2;
                 char sxkwang1[50]={0};
                 char sxkwang2[50]={0};
                 char sxkwang_d1[50]={0};
@@ -961,9 +961,9 @@ void vp8_encode_frame(VP8_COMP *cpi) {
                 file2=fopen(sxkwang2,"wb");
                 fwrite(qcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file2);
                 fclose(file2);
-                //file_d2=fopen(sxkwang_d2,"wb");
-                //fwrite(dqcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file_d2);
-                //fclose(file_d2);
+                file_d2=fopen(sxkwang_d2,"wb");
+                fwrite(dqcoeff,sizeof(short),400 * cm->mb_cols * cm->mb_rows,file_d2);
+                fclose(file_d2);
               
                 printf("saved qcoeff for frame %d\n",cm->current_video_frame);
 
